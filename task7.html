@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple-Counter</title>
+
+</head>
+<body>
+    <h1>Counter Application</h1>
+    <p>Current Count <span id="Counter-value">0</span></p>
+    <button id="increment-btn">Increment</button>
+    <button id="decrement-btn">Decrement</button>
+    <script>
+const counterValue=document.getElementById('Counter-value');
+const Incrementelement=document.getElementById('increment-btn');
+const Deceremntelement=document.getElementById('decrement-btn');
+
+// Intitlize counter 
+let count=0;
+
+counterValue.textContent=count;
+Incrementelement.addEventListener('click',()=>{
+count++;
+counterValue.textContent=count;
+});
+
+counterValue.textContent=count;
+Deceremntelement.addEventListener('click',()=>{
+count--;
+counterValue.textContent=count;
+});
+
+
+    </script>
+</body>
+</html>

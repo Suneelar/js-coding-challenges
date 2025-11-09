@@ -1,36 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motivational Quote</title>
+  <style>
+    body {
+      background-image: url('./images/fresh-white-cherry-blossoms-on-260nw-1718560081.webp'); /* ✅ Change this path if needed */
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+
+      /* ✅ Center everything vertically and horizontally */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #title {
+      background-color: rgba(255, 228, 196, 0.85); /* translucent background */
+      color: red;
+      width: 400px;
+      text-align: center;
+      padding: 25px;
+      border-radius: 12px;
+      font-size: 18px;
+      line-height: 1.6;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #changeBtn {
+      background-color: antiquewhite;
+      color: blue;
+      border: none;
+      padding: 10px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s linear;
+    }
+
+    #changeBtn:hover {
+      background-color: lightblue;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
-    <!-- // Small JS Tasks (DOM & Events)
-// Task 1: Change Text on Button Click
+  <h1 id="title">
+    When PM Modi is working 100 <br>hours a week, we, as citizens,<br>
+    should match his dedication <br>by putting in extra hours..
+  </h1>
 
-// Goal: Make a button that changes the heading text
-//. -->
+  <button id="changeBtn">Click me</button>
 
-<h1 id="title">Hello world</h1>
-<button id="changeBtn">Click-me</button>
 <script>
-    // Select the button
-    let her=document.getElementById('title')
-    let btn=document.getElementById('changeBtn')
-    // Add a Click event
-    btn.addEventListener('click',function(){
-// the code will run when button is clicked
+  let her = document.getElementById('title');
+  let btn = document.getElementById('changeBtn');
 
-// Step 3: Change the heading text
-    her.textContent="Hello JS!";
-    })
-    
-    
+  // ✅ Array of quotes
+  const quotes = [
+    "THE MAGIC YOU ARE LOOKING FOR IS IN THE WORK YOU ARE AVOIDING.",
+    "SUCCESS DOESN’T COME FROM WHAT YOU DO OCCASIONALLY — IT COMES FROM WHAT YOU DO CONSISTENTLY.",
+    "DON’T WATCH THE CLOCK; DO WHAT IT DOES — KEEP GOING.",
+    "DISCIPLINE IS DOING WHAT NEEDS TO BE DONE EVEN WHEN YOU DON’T FEEL LIKE DOING IT.",
+    "EVERY DAY IS A CHANCE TO GET BETTER. DON’T WASTE IT.",
+    "THE HARDER YOU WORK FOR SOMETHING, THE GREATER YOU’LL FEEL WHEN YOU ACHIEVE IT."
+  ];
+
+  let index = 0;
+
+  btn.addEventListener('click', function() {
+    // Add fade-out effect
+    her.classList.add('fade');
+
+    setTimeout(() => {
+      // Change the quote
+      her.textContent = quotes[index];
+      her.style.color = "white";
+      her.style.backgroundColor = "darkblue";
+
+      // Remove fade-out to fade in
+      her.classList.remove('fade');
+
+      // Move to the next quote (looping)
+      index = (index + 1) % quotes.length;
+    }, 600); // Wait for fade-out before switching
+  });
 </script>
+
 </body>
 </html>
-
-
-
-
