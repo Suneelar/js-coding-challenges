@@ -1,5 +1,6 @@
 :root{
-    --pink:#e84393;
+    --pink:rgba(0, 128, 0, 0.776);
+
 }
 *{
     margin: 0;
@@ -72,7 +73,138 @@ header .fa-bars{
      border: .1rem solid rgba(0,0,0,.3);
      display: none;
 }
+section{
+    padding:2rem ;
+}
+.home{
+    background-position: left;
+}
 
+.home{
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url(./images/gift-box-with-flowers-green-background_185193-72157.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.home .content{
+    max-width: 50rem;
+}
+.home .content h3{
+    font-size: 6rem;
+    color: #333;
+}
+.home .content span{
+    font-size: 3.5rem;
+    color: var(--pink);
+    padding: 1rem 0;
+    line-height: 1.5;
+}
+.home .content span{
+    font-size: 1.5rem;
+    color: var(--pink);
+     padding: 1rem 0;
+    line-height: 1.5;
+}
+
+.btn{
+    display: inline-block;
+    margin-top: 1rem;
+    border-radius: 5rem;
+    background: #333;
+    color: #fff;
+    padding: .9rem 3.5rem;
+    cursor: pointer;
+    font-size: 1.7rem;
+}
+.btn:hover{
+    background-color: var(--pink);
+}
+
+.home .content h3{
+    font-size: 5rem;
+}
+.home .content span{
+    font-size: 2.5rem;
+}
+#firstline{
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  padding-top: 30px;
+   opacity: 0.8;
+}
+#firstline h3{
+  text-transform: capitalize;
+
+}
+#second-line{
+    font-size: 2.5rem;
+    opacity: 0.6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  padding-top: 30px;
+
+}
+#boxes img{
+    height: 300px;
+    width: 300px;
+
+}
+#boxes h4{
+font-size: 1.9rem;
+padding-left: 20px;
+}
+#boxes span{
+
+}
+
+#gridcotainer{
+    display: grid;
+    gap: 5px 5px;
+    height: 50vh;
+    width: 80vh;
+    grid-template-areas:"hdr hdr hdr"
+    "ab ab ab" 
+    "ft ft";
+}
+#flex-container{
+            background-color: rgb(176, 220, 14);
+            height: 90vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items:center;
+        }
+       .items{
+border: 2px solid black;
+background-color: rgba(7, 173, 202, 0.817);
+       }
+       #grid-items1{
+      grid-area: hdr;
+       }
+       #grid-items2{
+      grid-area: ab;
+       }
+       #grid-items3{
+      grid-area: ab;
+       }
+       #grid-items4{
+        grid-area: ft;
+       }
+      #grid-items5{
+       grid-area:ft ;
+      }
+      #grid-items6{
+        grid-area:ft;
+      }
+     
 
 /* media quires */
 @media (max-width:991px) {
@@ -83,13 +215,17 @@ header{
     padding: 2rem;
 
 }
+section{
+    padding: 2rem;
+
+}
 }
 
 @media (max-width:768px) {
     header .fa-bars{
         display: block;
     }
-}
+
     header .navbar{
         position: absolute;
         top: 100%;right: 0;left: 0;
@@ -105,13 +241,16 @@ header{
         clip-path: polygon(0 0, 100% 0, 100% 0,0 0);
      }
 header #toggler:checked ~ .navbar {
-clip-path: polygon(0 0, 100% 0, 100% 0,0 0);
+clip-path: polygon(0 0, 100% 0, 100% 100%,0% 100%);
    }
 
-
+}
 @media (max-width:450px) {
     html{
     font-size: 50%;
 }
 
 }
+
+
+
