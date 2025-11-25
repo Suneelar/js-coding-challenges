@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Timetable Tracker</title>
+
+  <!-- Internal CSS -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    form input, form select, form button {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+
+    .filter {
+      text-align: right;
+      margin-bottom: 15px;
+    }
+
+    .filter select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .progress-box {
+      width: 200px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #progress-fill {
+      height: 100%;
+      width: 0%;
+      color: white;
+      text-align: center;
+      font-size: 12px;
+      line-height: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daily Timetable Tracker</h1>
+
+    <div class="top-section">
+      <form id="task-form">
+        <input type="text" id="task-name" placeholder="Task Name" required>
+        <input type="time" id="start-time" required>
+        <input type="time" id="end-time" required>
+        <select id="task-category" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="Study">Study</option>
+          <option value="Work">Work</option>
+          <option value="Exercise">Exercise</option>
+          <option value="Leisure">Leisure</option>
+          <option value="Other">Other</option>
+        </select>
+        <button type="submit">Add Task</button>
+      </form>
+
+      <div class="progress-box">
+        <h3>Daily Progress</h3>
+        <div class="progress-bar">
+          <div id="progress-fill">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter">
+      <label for="filter-category">Filter by Category:</label>
+      <select id="filter-category">
+        <option value="All">All</option>
+        <option value="Study">Study</option>
+        <option value="Work">Work</option>
+        <option value="Exercise">Exercise</option>
+        <option value="Leisure">Leisure</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="task-list"></tbody>
+    </table>
+  </div>
+
+  <!-- Inline JavaScript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const taskForm = document.getElementById("task-form");
+      const taskList = document.getElementById("task-list");
+      const filterCategory = document.getElementById("filter-category");
+      const progressFill = document.getElementById("progress-fill");
+
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      // Add Task
+      taskForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("task-name").value;
+        const start = document.getElementById("start-time").value;
+        const end = document.getElementById("end-time").value;
+        const category = document.getElementById("task-category").value;
+
+        const task = {
+          id: Date.now(),
+          name,
+          start,
+          end,
+          category,
+          completed: false
+        };
+
+        tasks.push(task);
+        saveTasks();
+        displayTasks(tasks);
+        updateProgress();
+
+        taskForm.reset();
+      });
+
+      // Edit / Delete / Status Buttons
+      taskList.addEventListener("click", (e) => {
+        const id = parseInt(e.target.dataset.id);
+
+        if (e.target.classList.contains("delete-btn")) {
+          tasks = tasks.filter(task => task.id !== id);
+        }
+
+        if (e.target.classList.contains("edit-btn")) {
+          const task = tasks.find(t => t.id === id);
+          document.getElementById("task-name").value = task.name;
+          document.getElementById("start-time").value = task.start;
+          document.getElementById("end-time").value = task.end;
+          document.getElementById("task-category").value = task.category;
+          tasks = tasks.filter(t => t.id !== id);
+        }
+
+        if (e.target.classList.contains("status-btn")) {
+          const task = tasks.find(t => t.id === id);
+          task.completed = !task.completed;
+        }
+
+        saveTasks();
+        displayTasks(tasks);
+        updateProgress();
+      });
+
+      // Filter by Category
+      filterCategory.addEventListener("change", (e) => {
+        const category = e.target.value;
+        if (category === "All") displayTasks(tasks);
+        else {
+          const filtered = tasks.filter(t => t.category === category);
+          displayTasks(filtered);
+        }
+      });
+
+      // Display Tasks
+      function displayTasks(list) {
+        taskList.innerHTML = "";
+        list.sort((a, b) => a.start.localeCompare(b.start));
+
+        list.forEach(task => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${task.name}</td>
+            <td>${formatTime(task.start)}</td>
+            <td>${formatTime(task.end)}</td>
+            <td>${task.category}</td>
+            <td>
+              <button class="status-btn" data-id="${task.id}">
+                ${task.completed ? "✅ Done" : "⏳ Pending"}
+              </button>
+            </td>
+            <td>
+              <button class="edit-btn" data-id="${task.id}">Edit</button>
+              <button class="delete-btn" data-id="${task.id}">Delete</button>
+            </td>
+          `;
+          taskList.appendChild(row);
+        });
+      }
+
+      // Format 12-hour clock
+      function formatTime(time) {
+        let [hour, minute] = time.split(":").map(Number);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
+      }
+
+      // Save & Progress Update
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      function updateProgress() {
+        if (tasks.length === 0) {
+          progressFill.style.width = "0%";
+          progressFill.textContent = "0%";
+          progressFill.style.backgroundColor = "orange";
+          return;
+        }
+
+        const completed = tasks.filter(t => t.completed).length;
+        const percent = Math.round((completed / tasks.length) * 100);
+
+        progressFill.style.width = `${percent}%`;
+        progressFill.textContent = `${percent}%`;
+
+        if (percent <= 50) progressFill.style.backgroundColor = "orange";
+        else if (percent <= 75) progressFill.style.backgroundColor = "green";
+        else progressFill.style.backgroundColor = "gold";
+      }
+
+      // Initialize
+      displayTasks(tasks);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
